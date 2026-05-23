@@ -8,7 +8,7 @@ import { getStoredToken } from '@/lib/auth'
 interface CheckInItem {
   user_id: string
   timestamp?: string
-  users?: { nickname: string }[]
+  users?: { nickname: string }
 }
 
 interface UserRank {
@@ -59,13 +59,13 @@ export default function Leaderboard() {
   const fetchTotalRank = async (currentUserId?: string) => {
     const { data } = await supabase
       .from('check_ins')
-      .select('user_id, users(nickname)')
+      .select('*, users(nickname)')
 
     const counts: Record<string, { count: number; nickname: string }> = {}
 
     data?.forEach((item: CheckInItem) => {
       if (!counts[item.user_id]) {
-        counts[item.user_id] = { count: 0, nickname: item.users?.[0]?.nickname || '匿名' }
+        counts[item.user_id] = { count: 0, nickname: item.users?.nickname || '匿名' }
       }
       counts[item.user_id].count++
     })
@@ -89,14 +89,14 @@ export default function Leaderboard() {
 
     const { data } = await supabase
       .from('check_ins')
-      .select('user_id, users(nickname)')
+      .select('*, users(nickname)')
       .gte('timestamp', today.toISOString())
 
     const counts: Record<string, { count: number; nickname: string }> = {}
 
     data?.forEach((item: CheckInItem) => {
       if (!counts[item.user_id]) {
-        counts[item.user_id] = { count: 0, nickname: item.users?.[0]?.nickname || '匿名' }
+        counts[item.user_id] = { count: 0, nickname: item.users?.nickname || '匿名' }
       }
       counts[item.user_id].count++
     })
@@ -118,7 +118,7 @@ export default function Leaderboard() {
     // Simplified streak: count unique days with at least one check-in
     const { data } = await supabase
       .from('check_ins')
-      .select('user_id, timestamp, users(nickname)')
+      .select('*, users(nickname)')
       .order('timestamp', { ascending: false })
 
     const uniqueDays: Record<string, { days: Set<string>; nickname: string }> = {}
@@ -127,7 +127,7 @@ export default function Leaderboard() {
       if (!item.timestamp) return
       const date = new Date(item.timestamp).toDateString()
       if (!uniqueDays[item.user_id]) {
-        uniqueDays[item.user_id] = { days: new Set(), nickname: item.users?.[0]?.nickname || '匿名' }
+        uniqueDays[item.user_id] = { days: new Set(), nickname: item.users?.nickname || '匿名' }
       }
       uniqueDays[item.user_id].days.add(date)
     })
