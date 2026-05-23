@@ -124,6 +124,7 @@ export default function Leaderboard() {
     const uniqueDays: Record<string, { days: Set<string>; nickname: string }> = {}
 
     data?.forEach((item: CheckInItem) => {
+      if (!item.timestamp) return
       const date = new Date(item.timestamp).toDateString()
       if (!uniqueDays[item.user_id]) {
         uniqueDays[item.user_id] = { days: new Set(), nickname: item.users?.[0]?.nickname || '匿名' }
