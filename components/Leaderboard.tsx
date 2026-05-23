@@ -7,7 +7,7 @@ import { getStoredToken } from '@/lib/auth'
 
 interface CheckInItem {
   user_id: string
-  timestamp: string
+  timestamp?: string
   users?: { nickname: string }
 }
 
@@ -147,7 +147,7 @@ export default function Leaderboard() {
   const getMedalIcon = (index: number) => {
     if (index === 0) return '🥇'
     if (index === 1) return '🥈'
-    if (index === 3) return '🥉'
+    if (index === 2) return '🥉'
     return `${index + 1}.`
   }
 
