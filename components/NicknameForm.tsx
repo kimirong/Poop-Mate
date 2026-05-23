@@ -106,7 +106,7 @@ export default function NicknameForm() {
   }
 
   return (
-    <Card className="mx-4 my-8 rounded-card shadow-md" bordered={false}>
+    <Card className="mx-4 my-8 rounded-card shadow-md">
       <div className="text-center mb-6">
         <div className="text-4xl mb-2">🏠</div>
         <h1 className="text-xl font-bold text-text-primary">拉屎宝</h1>
