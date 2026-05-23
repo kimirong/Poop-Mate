@@ -8,7 +8,7 @@ import { getStoredToken } from '@/lib/auth'
 interface CheckInItem {
   user_id: string
   timestamp?: string
-  users?: { nickname: string }
+  users?: { nickname: string }[]
 }
 
 interface UserRank {
@@ -65,7 +65,7 @@ export default function Leaderboard() {
 
     data?.forEach((item: CheckInItem) => {
       if (!counts[item.user_id]) {
-        counts[item.user_id] = { count: 0, nickname: item.users?.nickname || '匿名' }
+        counts[item.user_id] = { count: 0, nickname: item.users?.[0]?.nickname || '匿名' }
       }
       counts[item.user_id].count++
     })
@@ -96,7 +96,7 @@ export default function Leaderboard() {
 
     data?.forEach((item: CheckInItem) => {
       if (!counts[item.user_id]) {
-        counts[item.user_id] = { count: 0, nickname: item.users?.nickname || '匿名' }
+        counts[item.user_id] = { count: 0, nickname: item.users?.[0]?.nickname || '匿名' }
       }
       counts[item.user_id].count++
     })
@@ -126,7 +126,7 @@ export default function Leaderboard() {
     data?.forEach((item: CheckInItem) => {
       const date = new Date(item.timestamp).toDateString()
       if (!uniqueDays[item.user_id]) {
-        uniqueDays[item.user_id] = { days: new Set(), nickname: item.users?.nickname || '匿名' }
+        uniqueDays[item.user_id] = { days: new Set(), nickname: item.users?.[0]?.nickname || '匿名' }
       }
       uniqueDays[item.user_id].days.add(date)
     })
